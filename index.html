@@ -1,0 +1,32 @@
+---
+layout: default
+title: 홈
+permalink: /
+---
+{% assign all_series = site.series | sort: 'order' %}
+<div class="home-page container">
+  <div class="home-intro"><span class="eyebrow">PERSONAL LOG</span><h1>{{ site.title | escape }}</h1><p>{{ site.description | escape }}</p></div>
+  {% if site.posts.size > 0 %}
+    {% assign featured_post = site.posts | first %}
+    <section class="spotlight" aria-labelledby="spotlight-title">
+      <div class="spotlight-copy"><span class="eyebrow">LATEST ARTICLE</span><h2 id="spotlight-title"><a href="{{ featured_post.url | relative_url }}">{{ featured_post.title | escape }}</a></h2>{% if featured_post.description %}<p>{{ featured_post.description | escape }}</p>{% endif %}<a class="text-link" href="{{ featured_post.url | relative_url }}">글 읽기 <span aria-hidden="true">→</span></a></div>
+      <a class="spotlight-image" href="{{ featured_post.url | relative_url }}" aria-label="{{ featured_post.title | escape }} 글 읽기"><span class="image-type">ARTICLE</span><span class="image-letter">CS</span></a>
+    </section>
+  {% elsif all_series.size > 0 %}
+    {% assign featured_series = all_series | last %}
+    <section class="spotlight" aria-labelledby="spotlight-title">
+      <div class="spotlight-copy"><span class="eyebrow">FEATURED SERIES</span><h2 id="spotlight-title"><a href="{{ featured_series.url | relative_url }}">{{ featured_series.title | escape }}</a></h2>{% if featured_series.description %}<p>{{ featured_series.description | escape }}</p>{% endif %}<a class="text-link" href="{{ featured_series.url | relative_url }}">시리즈 보기 <span aria-hidden="true">→</span></a></div>
+      <a class="spotlight-image" href="{{ featured_series.url | relative_url }}" aria-label="{{ featured_series.title | escape }} 시리즈 보기">{% if featured_series.cover %}<img src="{{ featured_series.cover | relative_url }}" alt="">{% endif %}</a>
+    </section>
+  {% endif %}
+  <section class="home-articles" aria-labelledby="articles-title">
+    <div class="section-title"><h2 id="articles-title">전체 아티클</h2><span>{{ site.posts.size }}개</span></div>
+    {% if site.posts.size > 0 %}
+      <div class="post-list">{% for post in site.posts %}<a class="post-row" href="{{ post.url | relative_url }}"><div><span class="post-row-date">{% if post.series %}{% assign ps = site.series | where: 'series_id', post.series | first %}{% if ps %}{{ ps.title | escape }} · {% endif %}{% endif %}{{ post.date | date: '%Y. %m. %d.' }}</span><h3>{{ post.title | escape }}</h3>{% if post.description %}<p>{{ post.description | escape }}</p>{% endif %}</div><span aria-hidden="true">↗</span></a>{% endfor %}</div>
+    {% else %}<p class="plain-empty">아직 게시된 아티클이 없습니다. 첫 글을 올리면 이곳에 표시됩니다.</p>{% endif %}
+  </section>
+  <section class="home-series" aria-labelledby="series-title">
+    <div class="section-title"><h2 id="series-title">시리즈</h2><a class="text-link" href="{{ '/series/' | relative_url }}">전체 보기 <span aria-hidden="true">→</span></a></div>
+    <div class="series-list">{% for item in all_series %}<a class="series-row" href="{{ item.url | relative_url }}"><span class="series-row-cover">{% if item.cover %}<img src="{{ item.cover | relative_url }}" alt="">{% endif %}</span><span class="series-row-copy"><span class="eyebrow">SERIES {{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><strong>{{ item.title | escape }}</strong>{% if item.description %}<span class="series-row-description">{{ item.description | escape }}</span>{% endif %}</span><span class="series-row-arrow" aria-hidden="true">↗</span></a>{% endfor %}</div>
+  </section>
+</div>

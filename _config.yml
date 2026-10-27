@@ -1,0 +1,26 @@
+title: "vvineey's notebook"
+description: 배우고 만들며 남긴 기록
+url: https://vvineey.github.io
+baseurl: ""
+lang: ko-KR
+timezone: Asia/Seoul
+markdown: kramdown
+permalink: /posts/:year/:month/:day/:title/
+collections:
+  series:
+    output: true
+exclude:
+  - README.md
+  - templates
+  - .gitignore
+defaults:
+  - scope:
+      path: ""
+      type: series
+    values:
+      layout: series
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post

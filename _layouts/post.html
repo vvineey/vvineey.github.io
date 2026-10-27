@@ -1,0 +1,16 @@
+---
+layout: default
+---
+{% assign related_series = site.series | where: 'series_id', page.series | first %}
+<article class="post-page">
+  <header class="post-head">
+    <div class="eyebrow">{% if related_series %}<a href="{{ related_series.url | relative_url }}">{{ related_series.title | escape }}</a>{% else %}ARTICLE{% endif %}{% if page.chapter %}<span aria-hidden="true"> · </span> {{ page.chapter }}장{% endif %}</div>
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.description %}<p class="post-description">{{ page.description | escape }}</p>{% endif %}
+    <p class="post-meta"><span>{{ site.title | escape }}</span><span aria-hidden="true">·</span><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y. %m. %d.' }}</time></p>
+  </header>
+  <div class="post-body">{{ content }}</div>
+  {% if related_series %}
+  <a class="post-series-link" href="{{ related_series.url | relative_url }}"><span class="eyebrow">SERIES</span><strong>{{ related_series.title | escape }}</strong><span aria-hidden="true">→</span></a>
+  {% endif %}
+</article>

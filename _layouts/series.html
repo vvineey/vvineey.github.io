@@ -1,0 +1,31 @@
+---
+layout: default
+---
+{% assign related_posts = site.posts | where: 'series', page.series_id %}
+{% assign chapter_items = site.data[page.chapters_data] %}
+<div class="series-page container">
+  <a class="back-link" href="{{ '/series/' | relative_url }}">← 시리즈 전체 보기</a>
+  <header class="series-hero">
+    {% if page.cover %}<div class="series-cover"><img src="{{ page.cover | relative_url }}" alt=""></div>{% endif %}
+    <div class="series-hero-copy">
+      <span class="eyebrow">SERIES</span>
+      <h1>{{ page.title | escape }}</h1>
+      {% if page.description %}<p>{{ page.description | escape }}</p>{% endif %}
+      <div class="series-facts">{% if page.author %}<span>{{ page.author | escape }}</span>{% endif %}{% if page.publisher %}<span>{{ page.publisher | escape }}</span>{% endif %}<span>{{ related_posts.size }}개 글</span></div>
+    </div>
+  </header>
+  <section class="series-contents" aria-labelledby="contents-title">
+    <div class="section-title"><h2 id="contents-title">{% if chapter_items %}전체 목차{% else %}아티클{% endif %}</h2><span>{% if chapter_items %}{{ chapter_items.size }}개 챕터{% else %}{{ related_posts.size }}개 글{% endif %}</span></div>
+    {% if chapter_items %}
+    <ol class="chapter-list">
+      {% for chapter in chapter_items %}
+        {% assign chapter_post = related_posts | where: 'chapter', chapter.number | first %}
+        <li>{% if chapter_post %}<a class="chapter-row" href="{{ chapter_post.url | relative_url }}"><span class="chapter-num">{{ chapter.number | prepend: '0' | slice: -2, 2 }}</span><strong>{{ chapter.title | escape }}</strong><span class="row-action">읽기 <span aria-hidden="true">↗</span></span></a>{% else %}<div class="chapter-row pending"><span class="chapter-num">{{ chapter.number | prepend: '0' | slice: -2, 2 }}</span><strong>{{ chapter.title | escape }}</strong><span class="row-action">정리 전</span></div>{% endif %}</li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    {% if related_posts.size > 0 %}<div class="post-list">{% for post in related_posts %}<a class="post-row" href="{{ post.url | relative_url }}"><div><span class="post-row-date">{{ post.date | date: '%Y. %m. %d.' }}</span><h3>{{ post.title | escape }}</h3>{% if post.description %}<p>{{ post.description | escape }}</p>{% endif %}</div><span aria-hidden="true">↗</span></a>{% endfor %}</div>{% else %}<p class="plain-empty">아직 게시된 글이 없습니다.</p>{% endif %}
+    {% endif %}
+  </section>
+  {% if page.source_url %}<p class="source-credit">목차 출처 · <a href="{{ page.source_url }}" target="_blank" rel="noopener noreferrer">{{ page.source_label | default: '출판사' | escape }} ↗</a></p>{% endif %}
+</div>

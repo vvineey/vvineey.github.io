@@ -1,0 +1,12 @@
+---
+layout: default
+title: 시리즈
+permalink: /series/
+description: 공부와 프로젝트 시리즈 목록
+---
+{% assign all_series = site.series | sort: 'order' %}
+<div class="series-index container">
+  <header class="listing-intro"><span class="eyebrow">COLLECTIONS</span><h1>시리즈</h1><p>주제와 책을 따라 이어지는 글을 모았습니다.</p></header>
+  <div class="section-title"><h2>전체 시리즈</h2><span>{{ all_series.size }}개</span></div>
+  <div class="series-list">{% for item in all_series %}<a class="series-row" href="{{ item.url | relative_url }}"><span class="series-row-cover">{% if item.cover %}<img src="{{ item.cover | relative_url }}" alt="">{% endif %}</span><span class="series-row-copy"><span class="eyebrow">SERIES {{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><strong>{{ item.title | escape }}</strong>{% if item.description %}<span class="series-row-description">{{ item.description | escape }}</span>{% endif %}</span><span class="series-row-arrow" aria-hidden="true">↗</span></a>{% endfor %}</div>
+</div>
